@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task Management Application
+
+## Overview
+
+This is a modern, responsive task management application built with Next.js, React, and shadcn/ui, powered by Bun as the JavaScript runtime. It allows users to efficiently manage tasks, providing features like task creation, editing, deletion, and status updates. The application offers a user-friendly interface with keyboard shortcuts for quick actions.
+
+## Features
+
+-   Create, read, update, and delete tasks
+-   Organize tasks by status (Open, In Progress, Closed)
+-   Sort tasks by due date, priority, or assignee
+-   Search functionality to quickly find tasks
+-   Responsive design for various screen sizes
+-   Keyboard shortcuts for efficient task management
+-   Local storage persistence for tasks and comments
+
+## Technologies Used
+
+-   Bun 1.0+
+-   Next.js 13+ (App Router)
+-   React 18+
+-   TypeScript
+-   shadcn/ui components
+-   Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   Bun 1.0 or later
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```
+    git clone https://github.com/Ajitpatil92002/task-management-app
+    cd task-management-app
+    ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+    ```
+    bun install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Run the development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    ```
+    bun run dev
+    ```
 
-## Deploy on Vercel
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   **Creating a Task**: Click the "New Task" button to create a new task.
+-   **Editing a Task**: Click on a task in the table to open the edit modal.
+-   **Changing Task Status**:
+    -   In the task edit modal, use the dropdown to change the status.
+    -   Alternatively, use keyboard shortcuts:
+        -   Press '1' for Open
+        -   Press '2' for In Progress
+        -   Press '3' for Closed
+-   **Deleting a Task**: In the task edit modal, click the "Delete" button.
+-   **Sorting Tasks**: Use the sort dropdown and direction button above the task table.
+-   **Searching Tasks**: Use the search bar to filter tasks by name, assignee, or labels.
+
+## Project Structure
+
+-   `app/`: Contains the main application code
+    -   `components/`: Reusable React components
+    -   `page.tsx`: Main page component
+-   `public/`: Static assets
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Bun-specific Notes
+
+This project uses Bun as the JavaScript runtime. Bun is designed to be a faster, more efficient alternative to Node.js. Here are some Bun-specific considerations:
+
+-   Bun has built-in support for TypeScript, so no additional compilation step is needed.
+-   Bun's package manager is used instead of npm or yarn. Use `bun install` to add new dependencies.
+-   The `bun run` command is used to execute scripts defined in your package.json.
+
+For more information on Bun, visit the [official Bun documentation](https://bun.sh/docs).

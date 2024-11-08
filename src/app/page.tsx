@@ -12,6 +12,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { initialTasks } from '@/constants/tasks';
+import { GitHubLink } from './components/githubLink';
 import { SearchBar } from './components/searchBar';
 import { TabNavigation } from './components/tabNavigation';
 import { TaskModal } from './components/taskModal';
@@ -29,71 +31,6 @@ export type Task = {
     assignee?: string;
     description?: string;
 };
-
-const initialTasks: Task[] = [
-    {
-        id: uuidv4(),
-        name: 'Implement user authentication',
-        labels: ['Backend', 'Security'],
-        status: 'Open',
-        created_at: '2023-11-22T13:10:13.649Z',
-        updated_at: '2023-11-22T13:10:13.649Z',
-        priority: 'High',
-        due_date: '2023-12-15',
-        assignee: 'John Doe',
-        description:
-            'Set up JWT-based authentication system for the application.',
-    },
-    {
-        id: uuidv4(),
-        name: 'Design landing page',
-        labels: ['Frontend', 'UI/UX'],
-        status: 'In Progress',
-        created_at: '2023-11-23T09:15:00.000Z',
-        updated_at: '2023-11-23T09:15:00.000Z',
-        priority: 'Medium',
-        due_date: '2023-12-10',
-        assignee: 'Jane Smith',
-        description: 'Create a responsive and engaging landing page design.',
-    },
-    {
-        id: uuidv4(),
-        name: 'Optimize database queries',
-        labels: ['Backend', 'Performance'],
-        status: 'Closed',
-        created_at: '2023-11-20T11:30:00.000Z',
-        updated_at: '2023-11-24T16:45:00.000Z',
-        priority: 'High',
-        due_date: '2023-11-30',
-        assignee: 'Bob Johnson',
-        description:
-            'Improve database query performance for faster page loads.',
-    },
-    {
-        id: uuidv4(),
-        name: 'Implement file upload feature',
-        labels: ['Backend', 'Frontend'],
-        status: 'Open',
-        created_at: '2023-11-25T10:00:00.000Z',
-        updated_at: '2023-11-25T10:00:00.000Z',
-        priority: 'Medium',
-        due_date: '2023-12-20',
-        assignee: 'Alice Williams',
-        description: 'Add the ability for users to upload and manage files.',
-    },
-    {
-        id: uuidv4(),
-        name: 'Create user dashboard',
-        labels: ['Frontend', 'UI/UX'],
-        status: 'In Progress',
-        created_at: '2023-11-26T14:30:00.000Z',
-        updated_at: '2023-11-26T14:30:00.000Z',
-        priority: 'High',
-        due_date: '2023-12-25',
-        assignee: 'Charlie Brown',
-        description: 'Design and implement a comprehensive user dashboard.',
-    },
-];
 
 type SortOption = 'due_date' | 'priority' | 'assignee';
 
@@ -196,49 +133,66 @@ export default function TaskManagementApp() {
 
     return (
         <div className='container mx-auto p-4 max-w-7xl'>
-            <h1 className='text-3xl font-bold mb-6'>Task Management</h1>
             <div className='flex justify-between items-center mb-6'>
-                <TabNavigation
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                />
-                <Button onClick={handleCreateTask}>
-                    <PlusIcon className='mr-2 h-4 w-4' /> New Task
-                </Button>
+                <h1 className='text-3xl font-bold'>Task Management</h1>
+                <GitHubLink />
             </div>
-            <div className='flex justify-between items-center mb-4'>
-                <SearchBar
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                />
-                <div className='flex items-center space-x-2'>
-                    <Select
-                        value={sortBy}
-                        onValueChange={(value: SortOption) => setSortBy(value)}
-                    >
-                        <SelectTrigger className='w-[180px]'>
-                            <SelectValue placeholder='Sort by' />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value='due_date'>Due Date</SelectItem>
-                            <SelectItem value='priority'>Priority</SelectItem>
-                            <SelectItem value='assignee'>Assignee</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Button
-                        variant='outline'
-                        onClick={() =>
-                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
-                        }
-                    >
-                        {sortOrder === 'asc' ? '↑' : '↓'}
+            <div className='rounded-lg p-6 mb-6'>
+                <div className='flex justify-between items-center mb-6'>
+                    <TabNavigation
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                    />
+                    <Button onClick={handleCreateTask}>
+                        <PlusIcon className='mr-2 h-4 w-4' /> New Task
                     </Button>
                 </div>
+                <div className='flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0'>
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                    />
+                    <div className='flex items-center space-x-2'>
+                        <Select
+                            value={sortBy}
+                            onValueChange={(value: SortOption) =>
+                                setSortBy(value)
+                            }
+                        >
+                            <SelectTrigger className='w-[180px]'>
+                                <SelectValue placeholder='Sort by' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value='due_date'>
+                                    Due Date
+                                </SelectItem>
+                                <SelectItem value='priority'>
+                                    Priority
+                                </SelectItem>
+                                <SelectItem value='assignee'>
+                                    Assignee
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Button
+                            variant='outline'
+                            onClick={() =>
+                                setSortOrder(
+                                    sortOrder === 'asc' ? 'desc' : 'asc'
+                                )
+                            }
+                        >
+                            {sortOrder === 'asc' ? '↑' : '↓'}
+                        </Button>
+                    </div>
+                </div>
+                <div className='border rounded-lg overflow-hidden'>
+                    <TaskTable
+                        tasks={filteredAndSortedTasks}
+                        onTaskSelect={handleTaskSelect}
+                    />
+                </div>
             </div>
-            <TaskTable
-                tasks={filteredAndSortedTasks}
-                onTaskSelect={handleTaskSelect}
-            />
             {isModalOpen && (
                 <TaskModal
                     task={selectedTask}
