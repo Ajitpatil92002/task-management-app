@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '@/components/ui/button';
 import { TabNavigation } from './components/tabNavigation';
+import { TaskModal } from './components/taskModal';
 import { TaskTable } from './components/taskTable';
 
 export type Task = {
@@ -91,6 +92,8 @@ export default function TaskManagementApp() {
     const [activeTab, setActiveTab] = useState<
         'Open' | 'In Progress' | 'Closed'
     >('Open');
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const storedTasks = localStorage.getItem('tasks');
@@ -106,6 +109,51 @@ export default function TaskManagementApp() {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
+    const filteredAndSortedTasks = tasks.filter(
+        task => task.status === activeTab
+    );
+
+    const handleTaskSelect = (task: Task) => {
+        setSelectedTask(task);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedTask(null);
+    };
+
+    const handleCreateTask = () => {
+        const newTask: Task = {
+            id: uuidv4(),
+            name: 'New Task',
+            labels: [],
+            status: 'Open',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            priority: 'Medium',
+        };
+        setTasks([...tasks, newTask]);
+        setSelectedTask(newTask);
+        setIsModalOpen(true);
+    };
+
+    const handleUpdateTask = (updatedTask: Task) => {
+        setTasks(prevTasks =>
+            prevTasks.map(task =>
+                task.id === updatedTask.id ? updatedTask : task
+            )
+        );
+        setSelectedTask(null);
+        setIsModalOpen(false);
+    };
+
+    const handleDeleteTask = (taskId: string) => {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+        setSelectedTask(null);
+        setIsModalOpen(false);
+    };
+
     return (
         <div className='container mx-auto p-4 max-w-7xl'>
             <h1 className='text-3xl font-bold mb-6'>Task Management</h1>
@@ -114,11 +162,22 @@ export default function TaskManagementApp() {
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                 />
-                <Button>
+                <Button onClick={handleCreateTask}>
                     <PlusIcon className='mr-2 h-4 w-4' /> New Task
                 </Button>
             </div>
-            <TaskTable tasks={tasks} />
+            <TaskTable
+                tasks={filteredAndSortedTasks}
+                onTaskSelect={handleTaskSelect}
+            />
+            {isModalOpen && (
+                <TaskModal
+                    task={selectedTask}
+                    onClose={handleCloseModal}
+                    onUpdate={handleUpdateTask}
+                    onDelete={handleDeleteTask}
+                />
+            )}
         </div>
     );
 }
