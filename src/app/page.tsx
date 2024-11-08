@@ -136,66 +136,42 @@ export default function TaskManagementApp() {
     };
 
     return (
-        <div className='container mx-auto p-4 max-w-7xl'>
+        <div className="container mx-auto p-2 sm:p-4 max-w-7xl">
             <Toaster position="top-center" />
-            <div className='flex justify-between items-center mb-6'>
-                <h1 className='text-3xl font-bold'>Task Management</h1>
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-0">Task Management</h1>
                 <GitHubLink />
             </div>
-            <div className='rounded-lg p-6 mb-6'>
-                <div className='flex justify-between items-center mb-6'>
-                    <TabNavigation
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
-                    />
-                    <Button onClick={handleCreateTask}>
-                        <PlusIcon className='mr-2 h-4 w-4' /> New Task
+            <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6">
+                    <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <Button onClick={handleCreateTask} className="mt-2 sm:mt-0">
+                        <PlusIcon className="mr-2 h-4 w-4" /> New Task
                     </Button>
                 </div>
-                <div className='flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0'>
-                    <SearchBar
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                    />
-                    <div className='flex items-center space-x-2'>
-                        <Select
-                            value={sortBy}
-                            onValueChange={(value: SortOption) =>
-                                setSortBy(value)
-                            }
-                        >
-                            <SelectTrigger className='w-[180px]'>
-                                <SelectValue placeholder='Sort by' />
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
+                    <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                    <div className="flex items-center space-x-2 mt-2 sm:mt-0">
+                        <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+                            <SelectTrigger className="w-[140px] sm:w-[180px]">
+                                <SelectValue placeholder="Sort by" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value='due_date'>
-                                    Due Date
-                                </SelectItem>
-                                <SelectItem value='priority'>
-                                    Priority
-                                </SelectItem>
-                                <SelectItem value='assignee'>
-                                    Assignee
-                                </SelectItem>
+                                <SelectItem value="due_date">Due Date</SelectItem>
+                                <SelectItem value="priority">Priority</SelectItem>
+                                <SelectItem value="assignee">Assignee</SelectItem>
                             </SelectContent>
                         </Select>
                         <Button
-                            variant='outline'
-                            onClick={() =>
-                                setSortOrder(
-                                    sortOrder === 'asc' ? 'desc' : 'asc'
-                                )
-                            }
+                            variant="outline"
+                            onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                         >
                             {sortOrder === 'asc' ? '↑' : '↓'}
                         </Button>
                     </div>
                 </div>
-                <div className='border rounded-lg overflow-hidden'>
-                    <TaskTable
-                        tasks={filteredAndSortedTasks}
-                        onTaskSelect={handleTaskSelect}
-                    />
+                <div className="border rounded-lg overflow-x-auto">
+                    <TaskTable tasks={filteredAndSortedTasks} onTaskSelect={handleTaskSelect} />
                 </div>
             </div>
             {isModalOpen && (

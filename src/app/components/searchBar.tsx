@@ -1,4 +1,5 @@
 import React from 'react';
+import { Search } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 
@@ -12,12 +13,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     setSearchTerm,
 }) => {
     return (
-        <div className='w-full max-w-sm'>
+        <div className="relative w-full sm:w-64">
+            <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-                type='text'
-                placeholder='Search tasks...'
+                type="text"
+                placeholder="Search tasks..."
                 value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8 w-full"
             />
         </div>
     );

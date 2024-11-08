@@ -46,54 +46,46 @@ export const TaskTable: React.FC<TaskTableProps> = ({
     }, [tasks, selectedIndex, onTaskSelect]);
 
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Labels</TableHead>
-                    <TableHead>Due Date</TableHead>
-                    <TableHead>Assignee</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {tasks.map((task, index) => (
-                    <TableRow
-                        key={task.id}
-                        className={`cursor-pointer ${index === selectedIndex ? 'bg-muted' : ''
-                            }`}
-                        onClick={() => onTaskSelect(task)}
-                    >
-                        <TableCell>{task.name}</TableCell>
-                        <TableCell>
-                            <Badge
-                                variant={
-                                    task.priority === 'High'
-                                        ? 'destructive'
-                                        : task.priority === 'Medium'
-                                            ? 'default'
-                                            : 'secondary'
-                                }
-                            >
-                                {task.priority}
-                            </Badge>
-                        </TableCell>
-                        <TableCell>
-                            {task.labels.map(label => (
-                                <Badge
-                                    key={label}
-                                    variant='outline'
-                                    className='mr-1'
-                                >
-                                    {label}
-                                </Badge>
-                            ))}
-                        </TableCell>
-                        <TableCell>{task.due_date || 'N/A'}</TableCell>
-                        <TableCell>{task.assignee || 'Unassigned'}</TableCell>
+        <div className="overflow-x-auto">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-[200px]">Name</TableHead>
+                        <TableHead className="w-[100px]">Priority</TableHead>
+                        <TableHead className="w-[150px]">Labels</TableHead>
+                        <TableHead className="w-[120px]">Due Date</TableHead>
+                        <TableHead className="w-[120px]">Assignee</TableHead>
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHeader>
+                <TableBody>
+                    {tasks.map((task, index) => (
+                        <TableRow
+                            key={task.id}
+                            className={`cursor-pointer ${index === selectedIndex ? 'bg-muted' : ''
+                                }`}
+                            onClick={() => onTaskSelect(task)}
+                        >
+                            <TableCell className="font-medium">{task.name}</TableCell>
+                            <TableCell>
+                                <Badge variant={task.priority === 'High' ? 'destructive' : task.priority === 'Medium' ? 'default' : 'secondary'}>
+                                    {task.priority}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex flex-wrap gap-1">
+                                    {task.labels.map(label => (
+                                        <Badge key={label} variant="outline">
+                                            {label}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </TableCell>
+                            <TableCell>{task.due_date || 'N/A'}</TableCell>
+                            <TableCell>{task.assignee || 'Unassigned'}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     );
 };
