@@ -46,9 +46,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     const [editedTask, setEditedTask] = useState<Task | null>(task);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+    const [labelsInput, setLabelsInput] = useState('');
 
     useEffect(() => {
-        setEditedTask(task);
+        if (task) {
+            setEditedTask(task);
+            setLabelsInput(task.labels.join(', '));
+        }
     }, [task]);
 
     const handleSelectChange = useCallback((name: string, value: string) => {
@@ -80,6 +84,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     ) => {
         const { name, value } = e.target;
         setEditedTask(prev => (prev ? { ...prev, [name]: value } : null));
+    };
+
+    const handleLabelsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLabelsInput(e.target.value);
+        const labels = e.target.value
+            .split(',')
+            .map(label => label.trim())
+            .filter(label => label !== '');
+        setEditedTask(prev => (prev ? { ...prev, labels } : null));
     };
 
     const handleSave = () => {
@@ -139,6 +152,22 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                                 name='description'
                                 value={editedTask.description || ''}
                                 onChange={handleInputChange}
+                                className='w-full sm:w-3/4'
+                            />
+                        </div>
+                        <div className='flex flex-col sm:flex-row items-center gap-4'>
+                            <Label
+                                htmlFor='labels'
+                                className='sm:w-1/4 text-right'
+                            >
+                                Labels
+                            </Label>
+                            <Input
+                                id='labels'
+                                name='labels'
+                                value={labelsInput}
+                                onChange={handleLabelsChange}
+                                placeholder='Enter comma-separated labels'
                                 className='w-full sm:w-3/4'
                             />
                         </div>
