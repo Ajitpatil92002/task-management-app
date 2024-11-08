@@ -5,6 +5,14 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from '@/components/ui/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { SearchBar } from './components/searchBar';
 import { TabNavigation } from './components/tabNavigation';
 import { TaskModal } from './components/taskModal';
 import { TaskTable } from './components/taskTable';
@@ -87,6 +95,8 @@ const initialTasks: Task[] = [
     },
 ];
 
+type SortOption = 'due_date' | 'priority' | 'assignee';
+
 export default function TaskManagementApp() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [activeTab, setActiveTab] = useState<
@@ -94,6 +104,9 @@ export default function TaskManagementApp() {
     >('Open');
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortBy, setSortBy] = useState<SortOption>('due_date');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
         const storedTasks = localStorage.getItem('tasks');
@@ -109,9 +122,36 @@ export default function TaskManagementApp() {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
-    const filteredAndSortedTasks = tasks.filter(
-        task => task.status === activeTab
-    );
+    const filteredAndSortedTasks = tasks
+        .filter(
+            task =>
+                task.status === activeTab &&
+                (task.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    task.assignee
+                        ?.toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                    task.labels.some(label =>
+                        label.toLowerCase().includes(searchTerm.toLowerCase())
+                    ))
+        )
+        .sort((a, b) => {
+            if (sortBy === 'due_date') {
+                return sortOrder === 'asc'
+                    ? new Date(a.due_date || '').getTime() -
+                          new Date(b.due_date || '').getTime()
+                    : new Date(b.due_date || '').getTime() -
+                          new Date(a.due_date || '').getTime();
+            } else if (sortBy === 'priority') {
+                const priorityOrder = { Low: 1, Medium: 2, High: 3 };
+                return sortOrder === 'asc'
+                    ? priorityOrder[a.priority] - priorityOrder[b.priority]
+                    : priorityOrder[b.priority] - priorityOrder[a.priority];
+            } else {
+                return sortOrder === 'asc'
+                    ? (a.assignee || '').localeCompare(b.assignee || '')
+                    : (b.assignee || '').localeCompare(a.assignee || '');
+            }
+        });
 
     const handleTaskSelect = (task: Task) => {
         setSelectedTask(task);
@@ -165,6 +205,35 @@ export default function TaskManagementApp() {
                 <Button onClick={handleCreateTask}>
                     <PlusIcon className='mr-2 h-4 w-4' /> New Task
                 </Button>
+            </div>
+            <div className='flex justify-between items-center mb-4'>
+                <SearchBar
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                />
+                <div className='flex items-center space-x-2'>
+                    <Select
+                        value={sortBy}
+                        onValueChange={(value: SortOption) => setSortBy(value)}
+                    >
+                        <SelectTrigger className='w-[180px]'>
+                            <SelectValue placeholder='Sort by' />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value='due_date'>Due Date</SelectItem>
+                            <SelectItem value='priority'>Priority</SelectItem>
+                            <SelectItem value='assignee'>Assignee</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <Button
+                        variant='outline'
+                        onClick={() =>
+                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+                        }
+                    >
+                        {sortOrder === 'asc' ? '↑' : '↓'}
+                    </Button>
+                </div>
             </div>
             <TaskTable
                 tasks={filteredAndSortedTasks}
