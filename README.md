@@ -4,6 +4,12 @@
 
 This is a modern, responsive task management application built with Next.js, React, and shadcn/ui, powered by Bun as the JavaScript runtime. It allows users to efficiently manage tasks, providing features like task creation, editing, deletion, and status updates. The application offers a user-friendly interface with keyboard shortcuts for quick actions.
 
+## Demo Video
+
+watch the demo video from the following link:
+
+[Download Demo Video ](https://drive.google.com/file/d/1JSo0EYvlpzSH9nlY0PfMJCuigLP-m4iL/view?usp=sharing)
+
 ## Features
 
 -   Create, read, update, and delete tasks
