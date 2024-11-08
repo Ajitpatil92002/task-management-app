@@ -3,6 +3,7 @@
 import { PlusIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Toaster, toast } from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button';
 import {
@@ -75,9 +76,9 @@ export default function TaskManagementApp() {
             if (sortBy === 'due_date') {
                 return sortOrder === 'asc'
                     ? new Date(a.due_date || '').getTime() -
-                          new Date(b.due_date || '').getTime()
+                    new Date(b.due_date || '').getTime()
                     : new Date(b.due_date || '').getTime() -
-                          new Date(a.due_date || '').getTime();
+                    new Date(a.due_date || '').getTime();
             } else if (sortBy === 'priority') {
                 const priorityOrder = { Low: 1, Medium: 2, High: 3 };
                 return sortOrder === 'asc'
@@ -113,6 +114,7 @@ export default function TaskManagementApp() {
         setTasks([...tasks, newTask]);
         setSelectedTask(newTask);
         setIsModalOpen(true);
+        toast.success('New task created')
     };
 
     const handleUpdateTask = (updatedTask: Task) => {
@@ -123,16 +125,19 @@ export default function TaskManagementApp() {
         );
         setSelectedTask(null);
         setIsModalOpen(false);
+        toast.success('Task updated successfully')
     };
 
     const handleDeleteTask = (taskId: string) => {
         setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
         setSelectedTask(null);
         setIsModalOpen(false);
+        toast.success('Task deleted successfully')
     };
 
     return (
         <div className='container mx-auto p-4 max-w-7xl'>
+            <Toaster position="top-center" />
             <div className='flex justify-between items-center mb-6'>
                 <h1 className='text-3xl font-bold'>Task Management</h1>
                 <GitHubLink />

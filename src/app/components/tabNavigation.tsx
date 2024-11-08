@@ -1,5 +1,6 @@
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import React from 'react';
+
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 type TabNavigationProps = {
     activeTab: 'Open' | 'In Progress' | 'Closed';

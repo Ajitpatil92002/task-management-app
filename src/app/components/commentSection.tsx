@@ -1,3 +1,6 @@
+import { Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,8 +14,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
-import { Trash2 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
 
 type Comment = {
     id: string;

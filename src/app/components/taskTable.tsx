@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import { Badge } from '@/components/ui/badge';
 import {
     Table,
@@ -7,7 +9,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import React, { useEffect, useState } from 'react';
 import { Task } from '../page';
 
 type TaskTableProps = {
@@ -59,9 +60,8 @@ export const TaskTable: React.FC<TaskTableProps> = ({
                 {tasks.map((task, index) => (
                     <TableRow
                         key={task.id}
-                        className={`cursor-pointer ${
-                            index === selectedIndex ? 'bg-muted' : ''
-                        }`}
+                        className={`cursor-pointer ${index === selectedIndex ? 'bg-muted' : ''
+                            }`}
                         onClick={() => onTaskSelect(task)}
                     >
                         <TableCell>{task.name}</TableCell>
@@ -71,8 +71,8 @@ export const TaskTable: React.FC<TaskTableProps> = ({
                                     task.priority === 'High'
                                         ? 'destructive'
                                         : task.priority === 'Medium'
-                                        ? 'default'
-                                        : 'secondary'
+                                            ? 'default'
+                                            : 'secondary'
                                 }
                             >
                                 {task.priority}
