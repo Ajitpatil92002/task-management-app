@@ -62,6 +62,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({
 
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
+            const target = event.target as HTMLElement;
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+                return; // Exit if the focus is on an input or textarea
+            }
             if (event.key === '1') {
                 handleSelectChange('status', 'Open');
             } else if (event.key === '2') {
@@ -121,147 +125,187 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     return (
         <>
             <Dialog open={true} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[600px] w-[95vw] max-h-[90vh] overflow-y-auto">
+                <DialogContent className='sm:max-w-[600px] w-[95vw] max-h-[90vh] overflow-y-auto'>
                     <DialogHeader>
-                        <DialogTitle className="text-xl sm:text-2xl">{editedTask.name}</DialogTitle>
+                        <DialogTitle className='text-xl sm:text-2xl'>
+                            {editedTask.name}
+                        </DialogTitle>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="name" className="sm:text-right">
+                    <div className='grid gap-4 py-4'>
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label htmlFor='name' className='sm:text-right'>
                                 Name
                             </Label>
                             <Input
-                                id="name"
-                                name="name"
+                                id='name'
+                                name='name'
                                 value={editedTask.name}
                                 onChange={handleInputChange}
-                                className="col-span-1 sm:col-span-3"
+                                className='col-span-1 sm:col-span-3'
                             />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="description" className="sm:text-right">
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label
+                                htmlFor='description'
+                                className='sm:text-right'
+                            >
                                 Description
                             </Label>
                             <Textarea
-                                id="description"
-                                name="description"
+                                id='description'
+                                name='description'
                                 value={editedTask.description || ''}
                                 onChange={handleInputChange}
-                                className="col-span-1 sm:col-span-3"
+                                className='col-span-1 sm:col-span-3'
                             />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="labels" className="sm:text-right">
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label htmlFor='labels' className='sm:text-right'>
                                 Labels
                             </Label>
                             <Input
-                                id="labels"
-                                name="labels"
+                                id='labels'
+                                name='labels'
                                 value={labelsInput}
                                 onChange={handleLabelsChange}
-                                placeholder="Enter comma-separated labels"
-                                className="col-span-1 sm:col-span-3"
+                                placeholder='Enter comma-separated labels'
+                                className='col-span-1 sm:col-span-3'
                             />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="priority" className="sm:text-right">
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label htmlFor='priority' className='sm:text-right'>
                                 Priority
                             </Label>
                             <Select
-                                onValueChange={(value) => handleSelectChange('priority', value)}
+                                onValueChange={value =>
+                                    handleSelectChange('priority', value)
+                                }
                                 value={editedTask.priority}
                             >
-                                <SelectTrigger className="col-span-1 sm:col-span-3">
-                                    <SelectValue placeholder="Select a priority" />
+                                <SelectTrigger className='col-span-1 sm:col-span-3'>
+                                    <SelectValue placeholder='Select a priority' />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Low">Low</SelectItem>
-                                    <SelectItem value="Medium">Medium</SelectItem>
-                                    <SelectItem value="High">High</SelectItem>
+                                    <SelectItem value='Low'>Low</SelectItem>
+                                    <SelectItem value='Medium'>
+                                        Medium
+                                    </SelectItem>
+                                    <SelectItem value='High'>High</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="status" className="sm:text-right">
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label htmlFor='status' className='sm:text-right'>
                                 Status
                             </Label>
                             <Select
-                                onValueChange={(value) => handleSelectChange('status', value)}
+                                onValueChange={value =>
+                                    handleSelectChange('status', value)
+                                }
                                 value={editedTask.status}
                             >
-                                <SelectTrigger className="col-span-1 sm:col-span-3">
-                                    <SelectValue placeholder="Select a status" />
+                                <SelectTrigger className='col-span-1 sm:col-span-3'>
+                                    <SelectValue placeholder='Select a status' />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Open">Open</SelectItem>
-                                    <SelectItem value="In Progress">In Progress</SelectItem>
-                                    <SelectItem value="Closed">Closed</SelectItem>
+                                    <SelectItem value='Open'>Open</SelectItem>
+                                    <SelectItem value='In Progress'>
+                                        In Progress
+                                    </SelectItem>
+                                    <SelectItem value='Closed'>
+                                        Closed
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="text-sm text-muted-foreground mt-2 text-center">
+                        <div className='text-sm text-muted-foreground mt-2 text-center'>
                             Press 1 for Open, 2 for In Progress, 3 for Closed
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="assignee" className="sm:text-right">
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label htmlFor='assignee' className='sm:text-right'>
                                 Assignee
                             </Label>
                             <Input
-                                id="assignee"
-                                name="assignee"
+                                id='assignee'
+                                name='assignee'
                                 value={editedTask.assignee || ''}
                                 onChange={handleInputChange}
-                                className="col-span-1 sm:col-span-3"
+                                className='col-span-1 sm:col-span-3'
                             />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4">
-                            <Label htmlFor="due-date" className="sm:text-right">
+                        <div className='grid grid-cols-1 sm:grid-cols-4 items-center gap-2 sm:gap-4'>
+                            <Label htmlFor='due-date' className='sm:text-right'>
                                 Due Date
                             </Label>
                             <Input
-                                id="due-date"
-                                name="due_date"
-                                type="date"
+                                id='due-date'
+                                name='due_date'
+                                type='date'
                                 value={editedTask.due_date || ''}
                                 onChange={handleInputChange}
-                                className="col-span-1 sm:col-span-3"
+                                className='col-span-1 sm:col-span-3'
                             />
                         </div>
                         <CommentSection taskId={editedTask.id} />
                     </div>
-                    <DialogFooter className="sticky bottom-0 bg-background pt-2 flex-col sm:flex-row gap-2">
-                        <Button variant="destructive" onClick={handleDelete} className="w-full sm:w-auto">Delete</Button>
-                        <Button onClick={handleSave} className="w-full sm:w-auto">Save changes</Button>
+                    <DialogFooter className='sticky bottom-0 bg-background pt-2 flex-col sm:flex-row gap-2'>
+                        <Button
+                            variant='destructive'
+                            onClick={handleDelete}
+                            className='w-full sm:w-auto'
+                        >
+                            Delete
+                        </Button>
+                        <Button
+                            onClick={handleSave}
+                            className='w-full sm:w-auto'
+                        >
+                            Save changes
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
 
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure you want to delete this task?</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            Are you sure you want to delete this task?
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the task and all associated comments.
+                            This action cannot be undone. This will permanently
+                            delete the task and all associated comments.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+                        <AlertDialogAction onClick={confirmDelete}>
+                            Delete
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-            <AlertDialog open={isUpdateDialogOpen} onOpenChange={setIsUpdateDialogOpen}>
+            <AlertDialog
+                open={isUpdateDialogOpen}
+                onOpenChange={setIsUpdateDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Confirm Task Update</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to update this task? This action will modify the task details.
+                            Are you sure you want to update this task? This
+                            action will modify the task details.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={confirmUpdate}>Update</AlertDialogAction>
+                        <AlertDialogAction onClick={confirmUpdate}>
+                            Update
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
