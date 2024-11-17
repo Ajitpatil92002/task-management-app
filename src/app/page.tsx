@@ -35,7 +35,7 @@ export type Task = {
 
 type SortOption = 'due_date' | 'priority' | 'assignee';
 
-const TASKS_PER_PAGE = 20;
+const TASKS_PER_PAGE = 10;
 
 export default function TaskManagementApp() {
     const [tasks, setTasks] = useState<Task[]>([]);
