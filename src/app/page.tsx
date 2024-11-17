@@ -53,7 +53,7 @@ export default function TaskManagementApp() {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const storedTasks = localStorage.getItem('tasks');
+        const storedTasks = localStorage.getItem('tasks-items');
         if (storedTasks) {
             setTasks(JSON.parse(storedTasks));
         } else {
@@ -63,7 +63,7 @@ export default function TaskManagementApp() {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+        localStorage.setItem('tasks-items', JSON.stringify(tasks));
     }, [tasks]);
 
     const filterAndSortTasks = useCallback(() => {
