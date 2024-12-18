@@ -121,6 +121,7 @@ export const TaskTable: React.FC<TaskTableProps> = ({
         setSelectedCell([rowIndex, cellIndex]);
         setSelectedIndex(rowIndex);
         tableRef.current?.focus();
+        onTaskSelect(tasks[rowIndex]);
     };
 
     return (
@@ -151,6 +152,8 @@ export const TaskTable: React.FC<TaskTableProps> = ({
                                     ? lastTaskElementRef
                                     : null
                             }
+                            onClick={() => handleCellClick(rowIndex, 0)}
+                            className='cursor-pointer'
                         >
                             {[
                                 task.name,
@@ -181,15 +184,16 @@ export const TaskTable: React.FC<TaskTableProps> = ({
                             ].map((cellContent, cellIndex) => (
                                 <TableCell
                                     key={`${task.id}-${cellIndex}`}
-                                    className={`cursor-pointer ${
+                                    className={`${
                                         rowIndex === selectedCell?.[0] &&
                                         cellIndex === selectedCell?.[1]
                                             ? 'bg-muted'
                                             : ''
                                     }`}
-                                    onClick={() =>
-                                        handleCellClick(rowIndex, cellIndex)
-                                    }
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        handleCellClick(rowIndex, cellIndex);
+                                    }}
                                     role='gridcell'
                                 >
                                     {cellContent}

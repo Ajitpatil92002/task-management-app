@@ -14,7 +14,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { initialTasks } from '@/constants/tasks';
-import { GitHubLink } from './components/githubLink';
 import { SearchBar } from './components/searchBar';
 import { TabNavigation } from './components/tabNavigation';
 import { TaskModal } from './components/taskModal';
@@ -175,19 +174,31 @@ export default function TaskManagementApp() {
     return (
         <div className='container mx-auto p-2 sm:p-4 max-w-7xl'>
             <Toaster position='top-center' />
-            <div className='flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6'>
-                <h1 className='text-2xl sm:text-3xl font-bold mb-2 sm:mb-0'>
-                    Task Management
-                </h1>
-                <GitHubLink />
+            <div className='flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-lg text-white'>
+                <div className='flex items-center'>
+                    <h1 className='text-2xl sm:text-3xl font-bold'>
+                        CognifyPath Task Management
+                    </h1>
+                </div>
+                <a
+                    href='https://cognifypath.com'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-sm hover:underline mt-2 sm:mt-0'
+                >
+                    Visit CognifyPath.com
+                </a>
             </div>
-            <div className='rounded-lg p-4 sm:p-6 mb-4 sm:mb-6'>
+            <div className='rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 bg-white shadow-md'>
                 <div className='flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6'>
                     <TabNavigation
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
-                    <Button onClick={handleCreateTask} className='mt-2 sm:mt-0'>
+                    <Button
+                        onClick={handleCreateTask}
+                        className='mt-2 sm:mt-0 bg-blue-600 hover:bg-blue-700'
+                    >
                         <PlusIcon className='mr-2 h-4 w-4' /> New Task
                     </Button>
                 </div>
